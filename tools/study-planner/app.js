@@ -75,6 +75,13 @@ document.getElementById("build-btn").addEventListener("click", () => {
   scheduleList.innerHTML = "";
   for (const item of result.items) {
     const li = document.createElement("li");
+    if (item.type === "break") {
+      li.className = "break";
+      li.innerHTML = `<span class="time">${item.start} – ${item.end}</span>
+        <span class="task-name">☕ Перерыв</span>`;
+      scheduleList.appendChild(li);
+      continue;
+    }
     li.innerHTML = `<span class="time">${item.start} – ${item.end}</span>
       <span class="task-name"></span>
       <span class="badge ${item.priority}">${PRIORITY_LABEL[item.priority]}</span>`;
