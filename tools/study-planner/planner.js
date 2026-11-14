@@ -21,7 +21,9 @@ function minutesToTime(total) {
  * tasks: [{ name, hours, priority }]
  * Задачи сортируются по приоритету (при равном — в порядке добавления)
  * и ставятся друг за другом, начиная с dayStart.
- * Задачи, не помещающиеся до dayEnd, попадают в список skipped.
+ * Если задача не помещается целиком, ей отдаётся оставшееся время
+ * (partial: true), а все менее важные задачи попадают в skipped —
+ * время не уходит на менее приоритетные задачи раньше более важных.
  */
 function buildSchedule(tasks, dayStart, dayEnd) {
   const start = timeToMinutes(dayStart);
@@ -42,17 +44,20 @@ function buildSchedule(tasks, dayStart, dayEnd) {
 
   for (const task of sorted) {
     const duration = Math.round(task.hours * 60);
-    if (cursor + duration <= end) {
-      items.push({
-        name: task.name,
-        priority: task.priority,
-        start: minutesToTime(cursor),
-        end: minutesToTime(cursor + duration),
-      });
-      cursor += duration;
-    } else {
+    const available = end - cursor;
+    if (available <= 0) {
       skipped.push(task);
+      continue;
     }
+    const planned = Math.min(duration, available);
+    items.push({
+      name: task.name,
+      priority: task.priority,
+      start: minutesToTime(cursor),
+      end: minutesToTime(cursor + planned),
+      partial: planned < duration,
+    });
+    cursor += planned;
   }
 
   return { items, skipped, freeMinutes: end - cursor };

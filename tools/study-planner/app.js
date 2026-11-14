@@ -78,7 +78,8 @@ document.getElementById("build-btn").addEventListener("click", () => {
     li.innerHTML = `<span class="time">${item.start} – ${item.end}</span>
       <span class="task-name"></span>
       <span class="badge ${item.priority}">${PRIORITY_LABEL[item.priority]}</span>`;
-    li.querySelector(".task-name").textContent = item.name;
+    li.querySelector(".task-name").textContent =
+      item.name + (item.partial ? " (частично — не хватило времени)" : "");
     scheduleList.appendChild(li);
   }
 
