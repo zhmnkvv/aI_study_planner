@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Study Planner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>AI Study Planner</h1>
+    <p class="subtitle">Добавьте задачи на день — планировщик составит расписание.</p>
+
+    <section class="card">
+      <h2>Свободное время</h2>
+      <div class="row">
+        <label>С <input type="time" id="day-start" value="10:00"></label>
+        <label>До <input type="time" id="day-end" value="22:00"></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Задачи</h2>
+      <form id="task-form" class="row">
+        <input type="text" id="task-name" placeholder="Название задачи" required>
+        <label>Часы
+          <input type="number" id="task-duration" min="0.25" step="0.25" value="1" required>
+        </label>
+        <select id="task-priority">
+          <option value="high">Высокий</option>
+          <option value="medium" selected>Средний</option>
+          <option value="low">Низкий</option>
+        </select>
+        <button type="submit">Добавить</button>
+      </form>
+
+      <ul id="task-list" class="task-list"></ul>
+      <p id="empty-hint" class="hint">Задач пока нет.</p>
+    </section>
+
+    <button id="build-btn" class="primary">Сформировать расписание</button>
+    <p id="error" class="error"></p>
+
+    <section class="card" id="schedule-card" hidden>
+      <h2>План дня</h2>
+      <ol id="schedule" class="schedule"></ol>
+      <p id="schedule-summary" class="hint"></p>
+    </section>
+  </main>
+
+  <script src="planner.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
